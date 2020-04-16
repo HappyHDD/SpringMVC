@@ -1,30 +1,20 @@
 package MyMVS.persist;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class ProductRepository {
-    private final AtomicInteger identity = new AtomicInteger(0);
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    private final List<Product> products = new ArrayList<>();
+    @Query("from Product p where (p.cost > :mincost) and  (p.cost < :maxcost) ")
+    List<Product> filterProduct(@Param("mincost") int min, @Param("maxcost") int max);
 
-    public ProductRepository() {
-        insert(new Product("Milk", 70));
-        insert(new Product("Coffee", 120));
-        insert(new Product("Bread", 30));
-    }
-
-    public void insert(Product product) {
-        product.setId(identity.incrementAndGet());
-        products.add(product);
-    }
-
-    public List<Product> getAllProduct() {
-        return Collections.unmodifiableList(products);
-    }
 }
