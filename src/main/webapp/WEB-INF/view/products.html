@@ -4,7 +4,7 @@
 
 <a th:href="@{/product/form}">Create product</a>
 <br>
-<form method="get" th:action="@{/product/MinAndMax}">
+<form method="get" th:action="@{/product}">
     <label for="minPrice">Min price</label><input type="number" id="minPrice" name="minPrice">
     <label for="maxPrice">Max price</label><input type="number" id="maxPrice" name="maxPrice">
     <button type="submit">Apply</button>
@@ -12,17 +12,26 @@
 <br>
 <table border="1">
     <tr>
-        <th>ID</th>
         <th>Title</th>
         <th>Cost</th>
     </tr>
 
-    <tr th:each="product : ${products}">
-        <td th:text="${product.id}">test</td>
-        <td th:text="${product.title}">test</td>
-        <td th:text="${product.cost}">test</td>
+    <tr th:if="${productPage.hasContent()}" th:each="product : ${productPage.content}">
+        <td th:text="${product.title}">LN</td>
+        <td th:text="${product.cost}">12</td>
     </tr>
+
 </table>
+
+<div th:if="${productPage.hasContent()}" class="pagination">
+    <a th:href="@{/product(page=${1}, size=${productPage.size}, minPrice=${minPrice}, maxPrice=${maxPrice})}">&laquo;</a>
+
+    <a th:each="num: ${#numbers.sequence(1, productPage.totalPages)}"
+       th:classappend="${num == productPage.number + 1} ? 'active'"
+       th:href="@{/product(page=${num}, size=${productPage.size}, minPrice=${minPrice}, maxPrice=${maxPrice})}">[[${num}]]</a>
+
+    <a th:href="@{/product(page=${productPage.totalPages}, size=${productPage.size}, minPrice=${minPrice}, maxPrice=${maxPrice})}">&raquo;</a>
+</div>
 
 </body>
 </html>

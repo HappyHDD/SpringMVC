@@ -3,6 +3,8 @@ package MyMVS.service;
 import MyMVS.persist.Product;
 import MyMVS.persist.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +44,18 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> getSortProduct(int min, int max) {
         return productRepository.filterProduct(min,max);
+    }
+
+    public Page<Product> findAllByCostBetween(Optional<Integer> min, Optional<Integer> max, Pageable pageable) {
+        if (min.isPresent() && max.isPresent()) {
+            return productRepository.findAllByCostBetween(min.get(), max.get(), pageable);
+        }
+        if (min.isPresent()) {
+            return productRepository.findAllByCostGreaterThanEqual(min.get(), pageable);
+        }
+        if (max.isPresent()) {
+            return productRepository.findAllByCostLessThanEqual(max.get(), pageable);
+        }
+        return productRepository.findAll(pageable);
     }
 }
