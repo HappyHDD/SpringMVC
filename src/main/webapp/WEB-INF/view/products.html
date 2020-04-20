@@ -3,6 +3,13 @@
 <h1>Products list</h1>
 
 <a th:href="@{/product/form}">Create product</a>
+<br>
+<form method="get" th:action="@{/product/MinAndMax}">
+    <label for="minPrice">Min price</label><input type="number" id="minPrice" name="minPrice">
+    <label for="maxPrice">Max price</label><input type="number" id="maxPrice" name="maxPrice">
+    <button type="submit">Apply</button>
+</form>
+<br>
 <table border="1">
     <tr>
         <th>ID</th>
