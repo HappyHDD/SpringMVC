@@ -1,0 +1,27 @@
+GET http://localhost:8080/app/api/v1/product/all
+
+###
+
+GET http://localhost:8080/app/api/v1/product/between/150&350
+
+###
+
+GET http://localhost:8080/app/api/v1/product/3/id
+
+###
+
+POST http://localhost:8080/app/api/v1/product
+Content-Type: application/json
+
+{
+  "title": "fromRest",
+  "cost": "50"
+}
+
+###
+
+DELETE http://localhost:8080/app/api/v1/product/6/id
+
+###
+
+

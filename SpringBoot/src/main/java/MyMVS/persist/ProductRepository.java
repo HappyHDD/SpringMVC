@@ -21,4 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByCostLessThanEqual(Integer max, Pageable pageable);
 
+    List<Product> findAllByCostBetween(Integer min, Integer max);
+
+    List<Product> findAllByCostGreaterThanEqual(Integer min);
+
+    List<Product> findAllByCostLessThanEqual(Integer max);
+
 }
