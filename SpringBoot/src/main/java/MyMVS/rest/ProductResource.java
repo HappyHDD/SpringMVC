@@ -5,6 +5,7 @@ import MyMVS.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,27 @@ public class ProductResource {
     @Autowired
     public ProductResource(ProductService productService) {
         this.productService = productService;
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @PostMapping
+    public void createProduct(@RequestBody Product product) {
+        if (product.getId() != null) {
+            throw new IllegalArgumentException("Id field found in create request");
+        }
+        productService.save(product);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @PutMapping
+    public void updateProduct(@RequestBody Product product) {
+        productService.save(product);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @DeleteMapping(path = "/{id}/id", produces = "application/json")
+    public void deleteProduct(@PathVariable("id") long id) {
+        productService.deleteById(id);
     }
 
     @GetMapping(path = "/all", produces = "application/json")
@@ -36,23 +58,6 @@ public class ProductResource {
         return productService.findAllByCostBetween(min, max);
     }
 
-    @PostMapping
-    public void createProduct(@RequestBody Product product) {
-        if (product.getId() != null) {
-            throw new IllegalArgumentException("Id field found in create request");
-        }
-        productService.save(product);
-    }
-
-    @PutMapping
-    public void updateProduct(@RequestBody Product person) {
-        productService.save(person);
-    }
-
-    @DeleteMapping(path = "/{id}/id", produces = "application/json")
-    public void deleteProduct(@PathVariable("id") long id) {
-        productService.deleteById(id);
-    }
 
     @ExceptionHandler
     public ResponseEntity<String> notFoundExceptionHandler(NotFoundException exception) {

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/resources/style.css}">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar.html :: navbar"/>
+
+<form th:action="@{/}" th:object="${user}" method="post">
+    <p>Login:</p>
+    <p><input type="text" th:field="*{user.username}"></p>
+    <p>Password:</p>
+    <p><input type="text" th:field="*{user.password}"></p>
+    <button type="submit">Log in</button>
+</form>
+
+<br>
+</body>
+</html>

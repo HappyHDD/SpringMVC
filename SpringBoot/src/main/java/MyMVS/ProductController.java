@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,6 +26,12 @@ public class ProductController {
 //        model.addAttribute("products", productService.getAllProduct());
 //        return "products";
 //    }
+
+    @GetMapping("/{id}")
+    public String editPerson(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("product", productService.findById(id));
+        return "product_form";
+    }
 
     @GetMapping
     public String allProduct(@RequestParam(value = "minPrice") Optional<Integer> minPrice,
@@ -54,7 +57,7 @@ public class ProductController {
 
     @PostMapping("/form")
     public String newProduct(Product product) {
-        productService.insert(product);
+        productService.save(product);
         return "redirect:/product";
     }
 }
